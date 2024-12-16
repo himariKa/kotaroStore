@@ -23,7 +23,7 @@
             $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
             //SQL文を用いてデータベースにコードから一件データを取得する
-            $sql='SELECT name FROM mst_product WHERE code=?';
+            $sql='SELECT name,price FROM mst_product WHERE code=?';
             $stmt=$dbh->prepare($sql);
             $data[]=$pro_code;
             //データベースに命令を出す
@@ -54,7 +54,7 @@
         <?php print $pro_name;?>
         <br>
         価格<br>
-        <? php print $pro_price;?>円
+        <?php print $pro_price;?>円
         <br>
         <input type="button" onclick="history.back()" value="戻る">
         </form>
