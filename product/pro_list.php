@@ -15,28 +15,29 @@
             $dbh=new PDO($dsn,$user,$password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
-            //スタッフのコードと名前を全て取得
-            $sql='SELECT code,name FROM mst_staff WHERE 1';
+            //商品のコードと名前を全て取得
+            $sql='SELECT code,name,price FROM mst_product WHERE 1';
             $stmt=$dbh->prepare($sql);
             $stmt->execute();
 
             //データベースから切断する
             $dbh=null;
 
-            print'スタッフ一覧<br><br>';
-            //スタッフ情報　修正と削除の分岐
-            print'<form method="post" action="staff_branch.php">';
+            print'商品一覧<br><br>';
+            //商品情報　修正と削除の分岐
+            print'<form method="post" action="pro_branch.php">';
 
             while(true)
             {
                 $rec=$stmt->fetch(PDO::FETCH_ASSOC);
-            if($rec==false)
-            {
-                break;
-            }
+                    if($rec==false)
+                    {
+                        break;
+                    }
             //ラジオボタンの表示(valueの値は遷移先[staff_edit]で使うことができる)
-            print'<input type="radio" name="staffcode" value="'.$rec['code'].'">';
-            print $rec['name'];
+            print'<input type="radio" name="procode" value="'.$rec['code'].'">';
+            print $rec['name'].'---';
+            print $rec['price'].'円';
             print'<br>';
             }
             print'<input type ="submit" name="disp" value="参照">';
