@@ -9,13 +9,11 @@
         //データベースサーバーの障害対策　エラートラップ
         try
         {
-            $staff_code=$_POST['code'];
-            $staff_name=$_POST['name'];
-            $staff_pass=$_POST['pass'];
+            $pro_code=$_POST['procode'];
+            $pro_code=$_GET['procode'];
 
             //入力情報に対する安全対策
-            $staff_name=htmlspecialchars($staff_name,ENT_QUOTES,'UTF-8');
-            $staff_pass=htmlspecialchars($staff_pass,ENT_QUOTES,'UTF-8');
+            $pro_code=htmlspecialchars($pro_code,ENT_QUOTES,'UTF-8');
 
             //データベースに接続する
             $dsn='mysql:dbname=shop2;host=localhost;charset=utf8';
@@ -24,19 +22,17 @@
             $dbh=new PDO($dsn,$user,$password);
             $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
-            //SQL文を用いてデータベースにコードを追加する
-            $sql='UPDATE mst_staff SET name=?,password=? WHERE code=?';
+            //SQL文を用いてデータベースにコードから一件データを取得する
+            $sql='SELECT name FROM mst_product WHERE code=?';
             $stmt=$dbh->prepare($sql);
-            
-            //SQL文に入れる順にデータを入れる
-            $data[]=$staff_name;
-            $data[]=$staff_pass;
-            $data[]=$staff_code;
-            
-            var_dump($data);
+            $data[]=$pro_code;
             //データベースに命令を出す
             $stmt->execute($data);
-            
+            $rec=$stmt->fetch(PDO::FETCH_ASSOC);
+
+            //pro_nameを後続の処理で使えるように代入しておく
+            $pro_name = $rec['name'];
+
             //データベースから切断する
             $dbh=null;
         }
@@ -48,8 +44,20 @@
             exit();
         }
         ?>
-        修正しました。<br>
+        商品削除<br>
         <br>
-        <a href="staff_list.php">戻る</a>
+        商品コード<br>
+        <?php print $pro_code;?>
+        <br>
+        商品名<br>
+        <?php print $pro_name;?>
+        <br>
+        この商品を削除してよろしいですか？<br>
+        <br>
+        <form method="post" action="pro_delete_done.php">
+            <input type="hidden" name="code" value="<?php print $pro_code;?>">
+            <input type="button" onclick="history.back()" value="戻る">
+            <input type="submit" value="OK">
+        </form>
     </body>
 </html>
