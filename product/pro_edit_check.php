@@ -27,14 +27,20 @@
             print'<br>';
         }
 
-        // 一つ目のパスワードが入力されているかチェック
+        // 一つ目の価格が入力されているかチェック
         if($pro_price=='')
         {
             print'価格が入力されていません。<br>';
+        }else
+        {
+            print'価格：';
+            print $pro_price;
+            print'円<br>';
         }
 
+
         // 戻るボタン
-        if($pro_name==''||$pro_pass=='')
+        if($pro_name==''||$pro_price=='')
         {
             print'<form>';
             print'<input type="button" onclick="history.back()" value="戻る">';
@@ -42,14 +48,15 @@
         }
         else
         {
+            print'上記のように変更します。';
             print'<form method="post" action="pro_edit_done.php">';
             print'<input type="hidden" name="code" value="'.$pro_code.'">';
             print'<input type="hidden" name="name" value="'.$pro_name.'">';
+            print'<input type="hidden" name="price" value="'.$pro_price.'">';
             print'<br>';
             print'<input type="button" onclick="history.back()" value="戻る">';
             print'<input type="submit" value="OK">';
             print'</form>';
-
         }
         ?>
     </body>

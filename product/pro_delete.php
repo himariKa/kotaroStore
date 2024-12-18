@@ -9,11 +9,11 @@
         //データベースサーバーの障害対策　エラートラップ
         try
         {
-            $staff_code=$_POST['staffcode'];
-            $staff_code=$_GET['staffcode'];
+            $pro_code=$_POST['procode'];
+            $pro_code=$_GET['procode'];
 
             //入力情報に対する安全対策
-            $staff_code=htmlspecialchars($staff_code,ENT_QUOTES,'UTF-8');
+            $pro_code=htmlspecialchars($pro_code,ENT_QUOTES,'UTF-8');
 
             //データベースに接続する
             $dsn='mysql:dbname=shop2;host=localhost;charset=utf8';
@@ -23,15 +23,15 @@
             $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
             //SQL文を用いてデータベースにコードから一件データを取得する
-            $sql='SELECT name FROM mst_staff WHERE code=?';
+            $sql='SELECT name FROM mst_product WHERE code=?';
             $stmt=$dbh->prepare($sql);
-            $data[]=$staff_code;
+            $data[]=$pro_code;
             //データベースに命令を出す
             $stmt->execute($data);
             $rec=$stmt->fetch(PDO::FETCH_ASSOC);
 
-            //staff_nameを後続の処理で使えるように代入しておく
-            $staff_name = $rec['name'];
+            //pro_nameを後続の処理で使えるように代入しておく
+            $pro_name = $rec['name'];
 
             //データベースから切断する
             $dbh=null;
@@ -44,18 +44,18 @@
             exit();
         }
         ?>
-        スタッフ削除<br>
+        商品削除<br>
         <br>
-        スタッフコード<br>
-        <?php print $staff_code;?>
+        商品コード<br>
+        <?php print $pro_code;?>
         <br>
-        スタッフ名<br>
-        <?php print $staff_name;?>
+        商品名<br>
+        <?php print $pro_name;?>
         <br>
-        このスタッフを削除してよろしいですか？<br>
+        この商品を削除してよろしいですか？<br>
         <br>
-        <form method="post" action="staff_delete_done.php">
-            <input type="hidden" name="code" value="<?php print $staff_code;?>">
+        <form method="post" action="pro_delete_done.php">
+            <input type="hidden" name="code" value="<?php print $pro_code;?>">
             <input type="button" onclick="history.back()" value="戻る">
             <input type="submit" value="OK">
         </form>

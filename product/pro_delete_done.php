@@ -9,7 +9,7 @@
         //データベースサーバーの障害対策　エラートラップ
         try
         {
-            $staff_code=$_POST['code'];
+            $pro_code=$_POST['code'];
 
             //データベースに接続する
             $dsn='mysql:dbname=shop2;host=localhost;charset=utf8';
@@ -19,10 +19,10 @@
             $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
             //SQL文を用いてデータベースにコードを追加する
-            $sql='DELETE FROM mst_staff WHERE code=?';
+            $sql='DELETE FROM mst_product WHERE code=?';
             $stmt=$dbh->prepare($sql);
 
-            $data[]=$staff_code;
+            $data[]=$pro_code;
 
             //データベースに命令を出す
             $stmt->execute($data);
@@ -40,6 +40,6 @@
         ?>
         削除しました。<br>
         <br>
-        <a href="staff_list.php">戻る</a>
+        <a href="pro_list.php">戻る</a>
     </body>
 </html>
