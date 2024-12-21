@@ -11,6 +11,7 @@
         {
             $pro_name=$_POST['name'];
             $pro_price=$_POST['price'];
+            $pro_gazou_name=$_POST['gazou_name'];
 
             //入力情報に対する安全対策
             $pro_name=htmlspecialchars($pro_name,ENT_QUOTES,'UTF-8');
@@ -26,10 +27,11 @@
             $dbh->exec("SET GLOBAL general_log = 'ON';");
 
             //SQL文を用いてデータベースにコードを追加する
-            $sql='INSERT INTO mst_product(name,price) VALUES (?,?)';
+            $sql='INSERT INTO mst_product(name,price,gazou) VALUES (?,?,?)';
             $stmt=$dbh->prepare($sql);
             $data[]=$pro_name;
             $data[]=$pro_price;
+            $data[]=$pro_gazou_name;
             //データベースに命令を出す
             $stmt->execute($data);
             
