@@ -12,9 +12,8 @@
             $pro_code=$_POST['code'];
             $pro_name=$_POST['name'];
             $pro_price=$_POST['price'];
-            var_dump($pro_code);
-            var_dump($pro_name);
-            var_dump($pro_price);
+            $pro_gazou_name_old=$_POST['gazou_name_old'];
+            $pro_gazou_name=$_POST['gazou_name'];
 
             //入力情報に対する安全対策
             $pro_code=htmlspecialchars($pro_code,ENT_QUOTES,'UTF-8');
@@ -29,15 +28,15 @@
             $dbh->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
             //SQL文を用いてデータベースにコードを追加する
-            $sql='UPDATE mst_product SET name=?,price=? WHERE code=?';
+            $sql='UPDATE mst_product SET name=?,price=?,gazou=? WHERE code=?';
             $stmt=$dbh->prepare($sql);
             
             //SQL文に入れる順にデータを入れる 
             $data[]=$pro_name;
             $data[]=$pro_price;
+            $data[]=$pro_gazou_name;
             $data[]=$pro_code;
             
-            // var_dump($data);
             //データベースに命令を出す
             $stmt->execute($data);
             
@@ -51,6 +50,16 @@
             //強制終了
             exit();
         }
+        
+        //新しい画像が古い画像と異なるかどうか判断する
+        if($pro_gazou_name_old!=$pro_gazou_name){
+            //もし古い画像があれば削除する
+            if($pro_gazou_name_old!=''){
+                unlink('.gazou/'.$pro_gazou_name_old);
+            }
+        }
+        
+        
         ?>
         修正しました。<br>
         <br>
